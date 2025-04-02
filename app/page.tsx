@@ -35,28 +35,26 @@ const product_list = [
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <main className="flex-1">
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <h2 className="mb-8 text-2xl font-bold md:text-3xl">Products</h2>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {product_list.map((product) => {
-                return (
-                  <div key={product.id}>
-                    <ProductCard
-                      id={product.id}
-                      title={product.title}
-                      imageUrl={product.imageUrl}
-                      price={product.price}
-                    />
-                  </div>
-                );
-              })}
-            </div>
+    <main>
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="mb-8 text-2xl font-bold md:text-3xl">Products</h2>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {product_list.map((product) => {
+              return (
+                <div key={product.id}>
+                  <ProductCard
+                    id={product.id}
+                    title={product.title}
+                    imageUrl={product.imageUrl}
+                    price={product.price}
+                  />
+                </div>
+              );
+            })}
           </div>
-        </section>
-      </main>
-    </div>
+        </div>
+      </section>
+    </main>
   );
 }

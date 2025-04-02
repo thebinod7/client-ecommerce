@@ -17,10 +17,10 @@ export default function Header() {
 
         <nav className="flex items-center space-x-4 md:space-x-8">
           <Link
-            href="/"
+            href="/admin"
             className="py-2 font-medium text-gray-900 hover:text-gray-600 md:py-0"
           >
-            Home
+            Admin
           </Link>
           <Link
             href="#"
