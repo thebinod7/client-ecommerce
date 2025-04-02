@@ -1,6 +1,18 @@
 import React from "react";
 
-export default function CheckoutBox({ subtotal = 0, tax = 0, total = 0 }) {
+interface CheckoutBoxProps {
+  subtotal?: number;
+  tax?: number;
+  total?: number;
+  handleCheckoutClick: () => void;
+}
+
+export default function CheckoutBox({
+  subtotal = 0,
+  tax = 0,
+  total = 0,
+  handleCheckoutClick,
+}: CheckoutBoxProps) {
   return (
     <div>
       <div className="border rounded-lg p-6 bg-gray-50">
@@ -26,8 +38,8 @@ export default function CheckoutBox({ subtotal = 0, tax = 0, total = 0 }) {
           </div>
         </div>
         <button
-          className="w-full mt-6 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
-          onClick={() => alert("Proceeding to checkout")}
+          className="w-full cursor-pointer mt-6 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+          onClick={handleCheckoutClick}
         >
           Proceed to Checkout
         </button>

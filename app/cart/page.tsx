@@ -1,13 +1,19 @@
 "use client";
 
+import { CircleX } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import Modal from "react-modal";
 import { useAppStore } from "../store/app";
 import { saveCartItems } from "../store/local-storage";
 import CheckoutBox from "./CheckoutBox";
+import { REACT_MODAL_CUSTOM_STYLE } from "../constants/contants";
 
 export default function ShoppingCart() {
   const cartItems = useAppStore((state) => state.cartItems);
   const setCartItems = useAppStore((state) => state.setCartItems);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const updateQuantity = (uuid: string, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -53,6 +59,85 @@ export default function ShoppingCart() {
 
   return (
     <div className="container mx-auto py-10 px-4">
+      <Modal
+        ariaHideApp={false}
+        isOpen={modalIsOpen}
+        style={REACT_MODAL_CUSTOM_STYLE}
+        contentLabel="Checkout Modal"
+      >
+        <div className="flex justify-between">
+          <h2 className="font-bold">Fill Checkout Details</h2>
+
+          <button>
+            <CircleX
+              className="cursor-pointer"
+              size={20}
+              onClick={() => setIsOpen(!modalIsOpen)}
+            />
+          </button>
+        </div>
+        <hr className="border-t border-gray-300 my-2" />
+
+        <form>
+          <div className="mt-2">
+            <label className="font-bold" htmlFor="name">
+              Name
+            </label>
+            <input
+              className="block w-full mt-2 px-5 py-2 border border-gray-300 rounded-md outline-none"
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+              required
+            />
+          </div>
+          <div className="mt-2">
+            <label className="font-bold" htmlFor="email">
+              Email
+            </label>
+            <input
+              className="block w-full mt-2 px-5 py-2 border border-gray-300 rounded-md outline-none"
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div className="mt-2">
+            <label className="font-bold" htmlFor="contactNumber">
+              Contact Number
+            </label>
+            <input
+              className="block w-full mt-2 px-5 py-2 border border-gray-300 rounded-md outline-none"
+              type="text"
+              name="contactNumber"
+              placeholder="Enter your contact number"
+              required
+            />
+          </div>
+          <div className="mt-2">
+            <label className="font-bold" htmlFor="shippingAddress">
+              Shipping Address
+            </label>
+            <input
+              className="block w-full mt-2 px-5 py-2 border border-gray-300 rounded-md outline-none"
+              type="text"
+              name="shippingAddress"
+              placeholder="Enter your shipping address"
+              required
+            />
+          </div>
+          <div className="mt-2">
+            <button
+              className="bg-blue-500 w-full cursor-pointer mt-2 hover:bg-blue-600 text-white py-2 px-4 rounded"
+              type="submit"
+            >
+              Checkout
+            </button>
+          </div>
+        </form>
+      </Modal>
+
       <h1 className="text-2xl font-bold mb-6">Shopping Cart</h1>
 
       <div className="grid gap-6 md:grid-cols-3">
@@ -134,7 +219,12 @@ export default function ShoppingCart() {
           </div>
         </div>
 
-        <CheckoutBox subtotal={subtotal} tax={tax} total={total} />
+        <CheckoutBox
+          subtotal={subtotal}
+          tax={tax}
+          total={total}
+          handleCheckoutClick={() => setIsOpen(!modalIsOpen)}
+        />
       </div>
     </div>
   );
