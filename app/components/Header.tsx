@@ -1,11 +1,20 @@
 "use client";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { APP } from "../constants/contants";
+import { useAppStore } from "../store/app";
+import { getCartItems } from "../store/local-storage";
 
 export default function Header() {
-  const [cartCount, setCartCount] = React.useState(3);
+  const cartItems = useAppStore((state) => state.cartItems);
+  const setCartItems = useAppStore((state) => state.setCartItems);
+
+  useEffect(() => {
+    const cartItems = getCartItems();
+    setCartItems(cartItems);
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 border-b border-gray-300 bg-white">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -45,9 +54,9 @@ export default function Header() {
         <div className="flex items-center">
           <button className="relative p-2">
             <ShoppingCart size={24} />
-            {cartCount > 0 && (
+            {cartItems.length > 0 && (
               <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs text-white">
-                {cartCount}
+                {cartItems.length}
               </span>
             )}
           </button>
