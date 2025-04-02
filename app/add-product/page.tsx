@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import { addProduct } from "../services/api";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const DEFAULT_IMAGE_URL = "/images/b1.jpg";
 
 export default function page() {
+  const router = useRouter();
   const [productDetails, setProductDetails] = useState<any>({});
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +26,7 @@ export default function page() {
       await addProduct(productDetails);
       toast.success("Product added successfully");
       setProductDetails({});
+      router.push("/admin");
     } catch (err) {
       toast.error("Failed to add product");
     } finally {
