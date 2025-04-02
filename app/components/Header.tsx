@@ -52,14 +52,16 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center">
-          <button className="relative p-2">
-            <ShoppingCart size={24} />
-            {cartItems.length > 0 && (
-              <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs text-white">
-                {cartItems.length}
-              </span>
-            )}
-          </button>
+          <Link className="cursor-pointer" href="/cart">
+            <button className="relative p-2 cursor-pointer">
+              <ShoppingCart size={24} />
+              {cartItems.length > 0 && (
+                <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs text-white">
+                  {cartItems.length}
+                </span>
+              )}
+            </button>
+          </Link>
         </div>
       </div>
     </header>
