@@ -20,7 +20,7 @@ export default function page() {
 
       <div className="mt-10 flex items-center justify-between gap-8">
         <h2 className="text-2xl font-bold">Product List </h2>
-        <Link href="/">
+        <Link href="/add-product">
           <PlusCircle size={32} />
         </Link>
       </div>
