@@ -25,6 +25,12 @@ const product_list = [
     price: 400,
     imageUrl: "/images/b4.jpg",
   },
+  {
+    id: 5,
+    title: "Product 4",
+    price: 400,
+    imageUrl: "/images/b4.jpg",
+  },
 ];
 
 export default function Home() {

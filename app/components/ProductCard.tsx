@@ -15,7 +15,10 @@ export default function ProductCard({
   imageUrl,
 }: ProductCardProps) {
   return (
-    <div key={id} className="group overflow-hidden rounded-lg border">
+    <div
+      key={id}
+      className="group overflow-hidden rounded-lg border border-gray-300"
+    >
       <div className="relative h-64 overflow-hidden bg-gray-100">
         <Image
           src={`${imageUrl}?height=400&width=400`}
