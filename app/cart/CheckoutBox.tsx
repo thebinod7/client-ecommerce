@@ -2,14 +2,12 @@ import React from "react";
 
 interface CheckoutBoxProps {
   subtotal?: number;
-  tax?: number;
   total?: number;
   handleCheckoutClick: () => void;
 }
 
 export default function CheckoutBox({
   subtotal = 0,
-  tax = 0,
   total = 0,
   handleCheckoutClick,
 }: CheckoutBoxProps) {
@@ -25,10 +23,6 @@ export default function CheckoutBox({
           <div className="flex justify-between">
             <span>Shipping</span>
             <span>Free</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Tax</span>
-            <span>{tax}</span>
           </div>
           <div className="border-t pt-4 mt-4">
             <div className="flex justify-between font-bold text-lg">

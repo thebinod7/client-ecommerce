@@ -8,3 +8,7 @@ export const addProduct = async (productDetails: any) => {
 export const listProducts = async () => {
   return axios.get(`${API_URL}/products`);
 };
+
+export const createOrder = async (payload: any) => {
+  return axios.post(`${API_URL}/orders`, payload);
+};

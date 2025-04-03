@@ -8,12 +8,17 @@ import { useAppStore } from "../store/app";
 import { saveCartItems } from "../store/local-storage";
 import CheckoutBox from "./CheckoutBox";
 import { REACT_MODAL_CUSTOM_STYLE } from "../constants/contants";
+import { toast } from "sonner";
+import { createOrder } from "../services/api";
+import CartTableHeader from "./CartTableHeader";
 
 export default function ShoppingCart() {
   const cartItems = useAppStore((state) => state.cartItems);
   const setCartItems = useAppStore((state) => state.setCartItems);
 
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [orderDetails, setOrderDetails] = useState<any>({});
+  const [placingOrder, setPlacingOrder] = useState(false);
 
   const updateQuantity = (uuid: string, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -37,6 +42,34 @@ export default function ShoppingCart() {
     );
   };
 
+  const handleOrderInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setOrderDetails({ ...orderDetails, [name]: value });
+  };
+
+  const handleOrderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      setPlacingOrder(true);
+      const total = calculateSubtotal();
+      const orderPayload = {
+        ...orderDetails,
+        totalAmount: total,
+        orderItems: cartItems,
+      };
+      await createOrder(orderPayload);
+      toast.success("Order placed successfully!");
+      // Reset states
+      setCartItems([]);
+      saveCartItems([]);
+      setIsOpen(false);
+    } catch (err) {
+      toast.error("Failed to place order. Please try again.");
+    } finally {
+      setPlacingOrder(false);
+    }
+  };
+
   if (cartItems.length === 0) {
     return (
       <div className="container mx-auto py-10 px-4">
@@ -54,8 +87,7 @@ export default function ShoppingCart() {
   }
 
   const subtotal = calculateSubtotal();
-  const tax = Math.floor(subtotal * 0.07);
-  const total = subtotal + tax;
+  const total = subtotal;
 
   return (
     <div className="container mx-auto py-10 px-4">
@@ -78,7 +110,7 @@ export default function ShoppingCart() {
         </div>
         <hr className="border-t border-gray-300 my-2" />
 
-        <form>
+        <form onSubmit={handleOrderSubmit}>
           <div className="mt-2">
             <label className="font-bold" htmlFor="name">
               Name
@@ -88,6 +120,8 @@ export default function ShoppingCart() {
               type="text"
               name="name"
               placeholder="Enter your name"
+              value={orderDetails.name || ""}
+              onChange={handleOrderInputChange}
               required
             />
           </div>
@@ -100,6 +134,8 @@ export default function ShoppingCart() {
               type="email"
               name="email"
               placeholder="Enter your email"
+              value={orderDetails.email || ""}
+              onChange={handleOrderInputChange}
               required
             />
           </div>
@@ -112,6 +148,8 @@ export default function ShoppingCart() {
               type="text"
               name="contactNumber"
               placeholder="Enter your contact number"
+              value={orderDetails.contactNumber || ""}
+              onChange={handleOrderInputChange}
               required
             />
           </div>
@@ -124,15 +162,40 @@ export default function ShoppingCart() {
               type="text"
               name="shippingAddress"
               placeholder="Enter your shipping address"
+              value={orderDetails.shippingAddress || ""}
+              onChange={handleOrderInputChange}
               required
             />
           </div>
+          {/* Add payment method COD here */}
+          <div className="mt-2">
+            <label className="font-bold" htmlFor="paymentMethod">
+              Payment Method
+            </label>
+            <select
+              value={orderDetails.paymentMethod || ""}
+              onChange={(e) =>
+                setOrderDetails({
+                  ...orderDetails,
+                  paymentMethod: e.target.value,
+                })
+              }
+              className="block w-full mt-2 px-5 py-2 border border-gray-300 rounded-md outline-none"
+              name="paymentMethod"
+              required
+            >
+              <option value="">--Select Payment--</option>
+              <option value="COD">Cash on Delivery</option>
+              <option value="CREDIT_CARD">Credit Card</option>
+            </select>
+          </div>
           <div className="mt-2">
             <button
+              disabled={placingOrder}
               className="bg-blue-500 w-full cursor-pointer mt-2 hover:bg-blue-600 text-white py-2 px-4 rounded"
               type="submit"
             >
-              Checkout
+              {placingOrder ? "Placing Order..." : "Place Order"}
             </button>
           </div>
         </form>
@@ -144,23 +207,7 @@ export default function ShoppingCart() {
         <div className="md:col-span-2">
           <div className="border rounded-lg overflow-hidden">
             <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Quantity
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Price
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Total
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
-                </tr>
-              </thead>
+              <CartTableHeader />
               <tbody className="bg-white divide-y divide-gray-200">
                 {cartItems.map((item) => (
                   <tr key={item.uuid}>
@@ -221,7 +268,6 @@ export default function ShoppingCart() {
 
         <CheckoutBox
           subtotal={subtotal}
-          tax={tax}
           total={total}
           handleCheckoutClick={() => setIsOpen(!modalIsOpen)}
         />

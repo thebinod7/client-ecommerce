@@ -24,6 +24,7 @@ export default function ProductCard({
   const handleAddToCart = () => {
     const exist = cartItems.find((item) => item.uuid === uuid);
     const payload = {
+      productId: id,
       uuid: uuid,
       name: name,
       unitPrice: price,
