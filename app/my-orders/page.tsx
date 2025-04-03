@@ -1,8 +1,11 @@
 "use client";
-import ProductList from "../admin/ProductList";
 import CurrentUser from "../components/CurrentUser";
+import { useAppStore } from "../store/app";
+import MyOrdersList from "./MyOrders";
 
 export default function page() {
+  const currentUser = useAppStore((state) => state.loggedInUser);
+
   return (
     <div className="mt-5 mb-10 p-6">
       <CurrentUser />
@@ -10,7 +13,15 @@ export default function page() {
         <h2 className="text-2xl font-bold">My Order List </h2>
       </div>
       <div className="mt-5">
-        <ProductList />
+        {currentUser ? (
+          <MyOrdersList email={currentUser.email} />
+        ) : (
+          <div className="flex items-center justify-center">
+            <p className="text-sm text-gray-500">
+              Please login to view orders!
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -40,10 +40,10 @@ export default function OrderList() {
               Customer Name / Contact
             </th>
             <th className="border border-gray-200 px-4 py-2 text-left">
-              Payment Method
+              Order Date
             </th>
             <th className="border border-gray-200 px-4 py-2 text-left">
-              Ordered Items
+              Shipping Address
             </th>
             <th className="border border-gray-200 px-4 py-2 text-left">
               Total Amount
@@ -59,7 +59,7 @@ export default function OrderList() {
               <tr key={item.id} className="hover:bg-gray-50">
                 <td className="border border-gray-200 px-4 py-2 font-medium">
                   <ul>
-                    {item.suborders.map((s: any, ind) => {
+                    {item.suborders.map((s: any, ind: number) => {
                       return (
                         <li key={s.id}>
                           {ind + 1}.{s.product.name}({s.quantity})
@@ -72,10 +72,14 @@ export default function OrderList() {
                   {item.orderedBy.name} / {item.orderedBy.contactNumber}
                 </td>
                 <td className="border border-gray-200 px-4 py-2">
-                  {item.paymentMethod}
+                  {new Date(item.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })}
                 </td>
                 <td className="border border-gray-200 px-4 py-2">
-                  {item.quantity}
+                  {item.shippingAddress}
                 </td>
                 <td className="border border-gray-200 px-4 py-2">
                   NPR. {item.totalAmount}
@@ -111,8 +115,8 @@ export default function OrderList() {
             ))
           ) : (
             <tr>
-              <td colSpan={3} className="text-center py-4">
-                No products found
+              <td colSpan={5} className="text-center py-4">
+                No orders found
               </td>
             </tr>
           )}

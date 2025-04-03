@@ -16,9 +16,13 @@ export default function ShoppingCart() {
   const cartItems = useAppStore((state) => state.cartItems);
   const setCartItems = useAppStore((state) => state.setCartItems);
   const setLoggedinUser = useAppStore((state) => state.setLoggedinUser);
+  const loggedInUser = useAppStore((state) => state.loggedInUser);
 
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [orderDetails, setOrderDetails] = useState<any>({});
+  const [orderDetails, setOrderDetails] = useState<any>({
+    email: loggedInUser?.email || "",
+    name: loggedInUser?.name || "",
+  });
   const [placingOrder, setPlacingOrder] = useState(false);
 
   const updateQuantity = (uuid: string, newQuantity: number) => {

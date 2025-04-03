@@ -5,6 +5,12 @@ export const getAppStats = async () => {
   return axios.get(`${API_URL}/app/stats`);
 };
 
+export const listMyOrders = async (email: string) => {
+  const params = new URLSearchParams();
+  params.append("email", email);
+  return axios.get(`${API_URL}/orders/me`, { params });
+};
+
 export const addProduct = async (productDetails: any) => {
   return axios.post(`${API_URL}/products`, productDetails);
 };
