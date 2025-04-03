@@ -4,14 +4,19 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { APP } from "../constants/contants";
 import { useAppStore } from "../store/app";
-import { getCartItems } from "../store/local-storage";
+import { getCartItems, getCurrentUser } from "../store/local-storage";
 
 export default function Header() {
   const cartItems = useAppStore((state) => state.cartItems);
   const setCartItems = useAppStore((state) => state.setCartItems);
+  const setLoggedinUser = useAppStore((state) => state.setLoggedinUser);
 
   useEffect(() => {
     const cartItems = getCartItems();
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+      setLoggedinUser(currentUser);
+    }
     setCartItems(cartItems);
   }, []);
 
@@ -32,22 +37,16 @@ export default function Header() {
             Admin
           </Link>
           <Link
-            href="#"
+            href="/my-orders"
             className="py-2 font-medium text-gray-900 hover:text-gray-600 md:py-0"
           >
-            Shop
+            My Orders
           </Link>
           <Link
-            href="#"
+            href="/"
             className="py-2 font-medium text-gray-900 hover:text-gray-600 md:py-0"
           >
             Collections
-          </Link>
-          <Link
-            href="#"
-            className="py-2 font-medium text-gray-900 hover:text-gray-600 md:py-0"
-          >
-            About
           </Link>
         </nav>
 

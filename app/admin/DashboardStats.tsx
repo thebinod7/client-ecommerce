@@ -1,12 +1,21 @@
-import {
-  Users,
-  ShoppingBag,
-  DollarSign,
-  TrendingUp,
-  TrendingDown,
-} from "lucide-react";
+"use client";
+import { DollarSign, ShoppingBag, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getAppStats } from "../services/api";
 
 export default function DashboardStats() {
+  const [appStats, setAppStats] = useState<any>({});
+
+  useEffect(() => {
+    async function fetchStats() {
+      const resposne = await getAppStats();
+      console.log("RESP", resposne);
+      setAppStats(resposne.data);
+    }
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="w-full">
       <h2 className="mb-6 text-2xl font-bold">Dashboard Overview</h2>
@@ -23,7 +32,7 @@ export default function DashboardStats() {
             </div>
           </div>
           <div className="flex items-baseline space-x-1">
-            <h3 className="text-3xl font-bold">24,521</h3>
+            <h3 className="text-3xl font-bold">{appStats?.users || 0}</h3>
             <span className="text-xs">users</span>
           </div>
         </div>
@@ -39,7 +48,7 @@ export default function DashboardStats() {
             </div>
           </div>
           <div className="flex items-baseline space-x-1">
-            <h3 className="text-3xl font-bold">1,843</h3>
+            <h3 className="text-3xl font-bold">{appStats?.orders || 0}</h3>
             <span className="text-xs">orders</span>
           </div>
         </div>
@@ -55,7 +64,9 @@ export default function DashboardStats() {
             </div>
           </div>
           <div className="flex items-baseline space-x-1">
-            <h3 className="text-3xl font-bold">$89,421</h3>
+            <h3 className="text-3xl font-bold">
+              NPR. {appStats?.grossSales || 0}
+            </h3>
             <span className="text-xs">revenue</span>
           </div>
         </div>

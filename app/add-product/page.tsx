@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
-import { addProduct } from "../services/api";
-import { toast } from "sonner";
+import { ArrowLeftSquareIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
+import { addProduct } from "../services/api";
 
 const DEFAULT_IMAGE_URL = "/images/b1.jpg";
 
@@ -36,7 +37,14 @@ export default function page() {
 
   return (
     <div className="mt-10">
-      <h2 className="mb-6 text-2xl font-bold">Add your product</h2>
+      <div className="flex gap-4 items-center">
+        <h2 className="text-2xl font-bold">Add your product</h2>
+        <ArrowLeftSquareIcon
+          size={24}
+          className="cursor-pointer"
+          onClick={() => router.back()}
+        />
+      </div>
 
       <form onSubmit={handleFormSubmit}>
         <div className="py-2">

@@ -39,7 +39,7 @@ export default function ProductList() {
                   {item.name}
                 </td>
                 <td className="border border-gray-200 px-4 py-2">
-                  NPR {item.unitPrice}
+                  NPR. {item.unitPrice}
                 </td>
                 <td className="border border-gray-200 px-4 py-2">
                   {item.stock}

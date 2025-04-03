@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import Modal from "react-modal";
 import { useAppStore } from "../store/app";
-import { saveCartItems } from "../store/local-storage";
+import { saveCartItems, saveCurrentUser } from "../store/local-storage";
 import CheckoutBox from "./CheckoutBox";
 import { REACT_MODAL_CUSTOM_STYLE } from "../constants/contants";
 import { toast } from "sonner";
@@ -15,6 +15,7 @@ import CartTableHeader from "./CartTableHeader";
 export default function ShoppingCart() {
   const cartItems = useAppStore((state) => state.cartItems);
   const setCartItems = useAppStore((state) => state.setCartItems);
+  const setLoggedinUser = useAppStore((state) => state.setLoggedinUser);
 
   const [modalIsOpen, setIsOpen] = useState(false);
   const [orderDetails, setOrderDetails] = useState<any>({});
@@ -47,6 +48,15 @@ export default function ShoppingCart() {
     setOrderDetails({ ...orderDetails, [name]: value });
   };
 
+  const saveCurrentUserLogin = () => {
+    const user = {
+      name: orderDetails.name,
+      email: orderDetails.email,
+    };
+    setLoggedinUser(user);
+    saveCurrentUser(user);
+  };
+
   const handleOrderSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -58,6 +68,7 @@ export default function ShoppingCart() {
         orderItems: cartItems,
       };
       await createOrder(orderPayload);
+      saveCurrentUserLogin();
       toast.success("Order placed successfully!");
       // Reset states
       setCartItems([]);
