@@ -12,3 +12,11 @@ export const listProducts = async () => {
 export const createOrder = async (payload: any) => {
   return axios.post(`${API_URL}/orders`, payload);
 };
+
+export const listOrders = async () => {
+  return axios.get(`${API_URL}/orders`);
+};
+
+export const updateOrder = async (uuid: string, payload: any) => {
+  return axios.patch(`${API_URL}/orders/${uuid}`, payload);
+};

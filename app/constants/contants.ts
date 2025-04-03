@@ -16,3 +16,11 @@ export const REACT_MODAL_CUSTOM_STYLE = {
     transform: "translate(-50%, -50%)",
   },
 };
+
+export const ORDER_STATUS = {
+  ORDERED: "ORDERED",
+  PROCESSING: "PROCESSING",
+  SHIPPED: "SHIPPED",
+  DELIVERED: "DELIVERED",
+  CANCELLED: "CANCELLED",
+};

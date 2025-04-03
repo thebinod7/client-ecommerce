@@ -186,7 +186,7 @@ export default function ShoppingCart() {
             >
               <option value="">--Select Payment--</option>
               <option value="COD">Cash on Delivery</option>
-              <option value="CREDIT_CARD">Credit Card</option>
+              <option value="Credit Card">Credit Card</option>
             </select>
           </div>
           <div className="mt-2">

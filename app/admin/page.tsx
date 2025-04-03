@@ -3,6 +3,7 @@ import DashboardStats from "./DashboardStats";
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 import ProductList from "./ProductList";
+import OrderList from "./OrderList";
 
 export default function page() {
   return (
@@ -14,7 +15,7 @@ export default function page() {
       <div className="mt-10">
         <h2 className="mb-6 text-2xl font-bold">Order List</h2>
         <div className="mt-5">
-          <ProductList />
+          <OrderList />
         </div>
       </div>
 
